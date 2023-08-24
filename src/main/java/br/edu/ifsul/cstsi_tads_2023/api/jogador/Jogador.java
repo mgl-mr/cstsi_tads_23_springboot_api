@@ -36,9 +36,9 @@ public class Jogador {
     private Lobby lobby;
     @ManyToMany
     @JoinTable(
-            name = "jogador_jogo",
-            joinColumns = @JoinColumn(name = "id_jogador"),
-            inverseJoinColumns = @JoinColumn(name = "id_jogo")
+        name = "jogador_jogo",
+        joinColumns = @JoinColumn(name = "id_jogador"),
+        inverseJoinColumns = @JoinColumn(name = "id_jogo")
     )
     Set<Jogo> jogos;
 }
