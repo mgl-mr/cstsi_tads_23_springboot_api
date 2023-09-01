@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "lobbys", schema = "gc_tads", catalog = "")
@@ -21,12 +22,21 @@ public class Lobby {
     private Integer maxJogadores;
     private Byte convidar;
     private Byte privacidade;
+
     @ManyToOne
     @JoinColumn(name = "id_jogo", referencedColumnName = "id", nullable = false)
     private Jogo jogo;
+
     @OneToOne
     @JoinColumn(name = "id_dono", referencedColumnName = "id", nullable = false)
     private Jogador jogador;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "lobby",
+        joinColumns = @JoinColumn(name = "id_lobby"),
+        inverseJoinColumns = @JoinColumn(name = "id_jogador")
+    )
+    Set<Jogador> jogadores;
 }
 

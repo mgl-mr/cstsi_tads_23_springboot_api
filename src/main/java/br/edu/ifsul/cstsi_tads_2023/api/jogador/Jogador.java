@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,15 +31,21 @@ public class Jogador {
     private String urlFoto;
     private Time horarioInicio;
     private Time horarioFim;
+
     @OneToOne(mappedBy = "jogador")
     private Match match;
+
     @OneToOne(mappedBy = "jogador")
     private Lobby lobby;
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "jogador_jogo",
         joinColumns = @JoinColumn(name = "id_jogador"),
         inverseJoinColumns = @JoinColumn(name = "id_jogo")
     )
     Set<Jogo> jogos;
+
+    @ManyToMany(mappedBy = "jogadores")
+    Set<Lobby> lobbys;
 }
