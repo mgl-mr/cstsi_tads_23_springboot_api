@@ -18,10 +18,11 @@ public class Lobby {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    private String nome;
+    private String descricao;
     private Integer numJogadores;
     private Integer maxJogadores;
     private Byte convidar;
-    private Byte privacidade;
 
     @ManyToOne
     @JoinColumn(name = "id_jogo", referencedColumnName = "id", nullable = false)
