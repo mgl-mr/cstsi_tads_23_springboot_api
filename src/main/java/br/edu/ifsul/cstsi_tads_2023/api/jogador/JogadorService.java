@@ -1,6 +1,7 @@
 package br.edu.ifsul.cstsi_tads_2023.api.jogador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,6 +13,9 @@ import java.util.stream.Collectors;
 public class JogadorService {
     @Autowired
     private JogadorRepository rep;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public List<JogadorDTO> getJogadores() {
         return rep.findAll()
@@ -27,6 +31,7 @@ public class JogadorService {
 
     public JogadorDTO insert(Jogador jogador) {
         Assert.isNull(jogador.getId(), "Não foi possivel inserir o registro");
+        jogador.setSenha(encoder.encode(jogador.getSenha()));
         return JogadorDTO.create(rep.save(jogador));
     }
 
@@ -40,7 +45,7 @@ public class JogadorService {
             db.setAdmin(jogador.getAdmin());
             db.setNome(jogador.getNome());
             db.setEmail(jogador.getEmail());
-            db.setSenha(jogador.getSenha());
+            db.setSenha(encoder.encode(jogador.getSenha()));
             db.setDataNasc(jogador.getDataNasc());
             db.setBio(jogador.getBio());
             db.setUrlFoto(jogador.getUrlFoto());

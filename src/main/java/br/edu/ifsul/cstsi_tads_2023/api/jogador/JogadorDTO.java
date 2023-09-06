@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class JogadorDTO {
@@ -16,9 +18,18 @@ public class JogadorDTO {
     private Time horarioInicio;
     private Time horarioFim;
 
+    private List<String> roles;
+
     public static JogadorDTO create(Jogador j) {
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(j, JogadorDTO.class);
+        JogadorDTO dto = modelMapper.map(j, JogadorDTO.class);
+
+        dto.roles = j.getRoles()
+            .stream()
+            .map(Role::getNome)
+            .collect(Collectors.toList());
+
+        return dto;
     }
 
 }
