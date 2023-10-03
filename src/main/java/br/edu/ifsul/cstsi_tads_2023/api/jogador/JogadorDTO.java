@@ -1,5 +1,7 @@
 package br.edu.ifsul.cstsi_tads_2023.api.jogador;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 
@@ -17,6 +19,7 @@ public class JogadorDTO {
     private String urlFoto;
     private Time horarioInicio;
     private Time horarioFim;
+    private String token;
 
     private List<String> roles;
 
@@ -32,4 +35,15 @@ public class JogadorDTO {
         return dto;
     }
 
+    public static JogadorDTO create(Jogador j, String token) {
+        JogadorDTO dto = create(j);
+        dto.token = token;
+
+        return dto;
+    }
+
+    public String toJson() throws JsonProcessingException {
+        ObjectMapper m = new ObjectMapper();
+        return  m.writeValueAsString(this);
+    }
 }

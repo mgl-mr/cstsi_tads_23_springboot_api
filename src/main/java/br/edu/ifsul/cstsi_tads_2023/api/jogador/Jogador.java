@@ -25,7 +25,6 @@ public class Jogador implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
-    private Byte admin;
     private String nome;
     private String email;
     private String senha;

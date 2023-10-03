@@ -2,6 +2,7 @@ package br.edu.ifsul.cstsi_tads_2023.api.jogador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,11 +28,14 @@ public class JogadorController {
             ResponseEntity.notFound().build();
     }
 
-    @PostMapping
-    public ResponseEntity<String> insert(@RequestBody Jogador jogador) {
-        JogadorDTO j = service.insert(jogador);
-        URI location = getUri(j.getId());
-        return ResponseEntity.created(location).build();
+    @GetMapping("/info")
+    public JogadorDTO userInfo(@AuthenticationPrincipal Jogador jogador) {
+        return JogadorDTO.create(jogador);
+    }
+
+    @PostMapping("/register")
+    public JogadorDTO insert(@RequestBody Jogador jogador) {
+        return service.insert(jogador);
     }
 
     @PutMapping("{id}")

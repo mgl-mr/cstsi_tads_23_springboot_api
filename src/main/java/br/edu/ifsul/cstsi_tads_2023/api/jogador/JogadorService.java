@@ -5,6 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +15,9 @@ import java.util.stream.Collectors;
 public class JogadorService {
     @Autowired
     private JogadorRepository rep;
+
+    @Autowired
+    private RoleRepository roleRep;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -29,9 +34,12 @@ public class JogadorService {
         return jogador.map(JogadorDTO::create).orElse(null);
     }
 
+    @Transactional
     public JogadorDTO insert(Jogador jogador) {
-        Assert.isNull(jogador.getId(), "Não foi possivel inserir o registro");
+        Assert.isNull(jogador.getId(), "Não foi possível inserir o registro");
         jogador.setSenha(encoder.encode(jogador.getSenha()));
+        System.out.println(jogador);
+        jogador.setRoles(Arrays.asList(new Role(1L, "USER")));
         return JogadorDTO.create(rep.save(jogador));
     }
 
@@ -42,7 +50,7 @@ public class JogadorService {
         if (optional.isPresent()) {
             Jogador db = optional.get();
 
-            db.setAdmin(jogador.getAdmin());
+
             db.setNome(jogador.getNome());
             db.setEmail(jogador.getEmail());
             db.setSenha(encoder.encode(jogador.getSenha()));
