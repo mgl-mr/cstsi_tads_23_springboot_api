@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Collection;
@@ -25,13 +26,23 @@ public class Jogador implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    @NotBlank(message = "O nome não pode ser nulo ou vazio")
+    @Size(min = 3, max = 30, message = "Tamanho mínimo de 3 e máximo de 30")
     private String nome;
+    @NotBlank(message = "O email não pode ser nulo ou vazio")
+    @Email(message = "O email deve estar em um formato válido")
     private String email;
+    @NotBlank(message = "A senha não pode ser nula ou vazia")
     private String senha;
+    @NotNull(message = "A data de nascimento não deve ser nula")
+    @Past(message = "A data de nascimento deve estar no passado")
     private Date dataNasc;
+    @Size(max = 255, message = "Descrição deve ter no máximo 255 caracteres")
     private String bio;
     private String urlFoto;
+    @NotNull(message = "O horário inicial não deve ser nulo")
     private Time horarioInicio;
+    @NotNull(message = "O horário final deve ser nulo")
     private Time horarioFim;
 
     @OneToOne(mappedBy = "jogador")
