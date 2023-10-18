@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 public class JogadorDTO {
     private Long id;
     private String nome;
+    private String email;
     private Date dataNasc;
     private String bio;
     private String urlFoto;
