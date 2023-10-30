@@ -57,6 +57,10 @@ public class JogadorController {
     }
     //utilitário
     private URI getUri(Long id) {
-        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+        return ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .replacePath("/api/v1/jogadores/{id}")
+            .buildAndExpand(id)
+            .toUri();
     }
 }
