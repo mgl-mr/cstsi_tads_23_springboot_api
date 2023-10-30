@@ -34,8 +34,10 @@ public class JogadorController {
     }
 
     @PostMapping("/register")
-    public JogadorDTO insert(@RequestBody Jogador jogador) {
-        return service.insert(jogador);
+    public ResponseEntity<String> insert(@RequestBody Jogador jogador) {
+        JogadorDTO j = service.insert(jogador);
+        URI location = getUri(j.getId());
+        return ResponseEntity.created(location).build();
     }
 
     @PutMapping("{id}")

@@ -43,6 +43,7 @@ class JogadorControllerTest extends BaseAPITest {
 
     @Test
     void selectById() {
+
         assertNotNull(getJogador("/api/v1/jogadores/1"));
         assertNotNull(getJogador("/api/v1/jogadores/2"));
 
@@ -52,6 +53,31 @@ class JogadorControllerTest extends BaseAPITest {
 
     @Test
     void insert() {
+        Jogador jogador = new Jogador();
+        jogador.setNome("Carl");
+        jogador.setEmail("carl@email.com");
+        jogador.setSenha("Teste123");
+        jogador.setDataNasc(Date.valueOf("2010-05-20"));
+        jogador.setBio("Apenas um Carl");
+        jogador.setUrlFoto("https://carl.png");
+        jogador.setHorarioInicio(Time.valueOf("10:00:00"));
+        jogador.setHorarioFim(Time.valueOf("12:00:00"));
+
+        ResponseEntity response = post("/api/v1/jogadores/register", jogador, null);
+        System.out.println("response:");
+        System.out.println(response);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        String location = response.getHeaders().get("location").get(0);
+        JogadorDTO j = getJogador(location).getBody();
+
+        assertNotNull(j);
+        assertEquals("Carl", j.getNome());
+
+        delete(location, null);
+
+        assertEquals(HttpStatus.NOT_FOUND, getJogador(location).getStatusCode());
     }
 
     @Test
